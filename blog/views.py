@@ -1,9 +1,7 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
+from django.utils import timezone
 from .models import Post
 
-me = User.objects.get(username='timm')
-
 def post_list(request):
-    posts = Post.objects.filter(author =me).order_by('author')
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
